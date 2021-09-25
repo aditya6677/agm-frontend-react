@@ -32,7 +32,7 @@ export default function DashboardApp() {
           <Button
             variant="contained"
             component={RouterLink}
-            to="#"
+            to="/dashboard/add"
             startIcon={<Icon icon={plusFill} />}
           >
             New Service
