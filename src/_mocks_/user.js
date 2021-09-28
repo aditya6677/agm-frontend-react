@@ -5,6 +5,16 @@ import { mockImgAvatar } from '../utils/mockImages';
 
 // ----------------------------------------------------------------------
 
+const rcList = async() => {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  };
+  const response = await fetch(process.env.REACT_APP_BACKEND_API + '/getRcList', requestOptions);
+  const data = await response.json();
+  return data.info;
+}
+
 const users = [...Array(24)].map((_, index) => ({
   id: faker.datatype.uuid(),
   avatarUrl: mockImgAvatar(index + 1),
@@ -26,4 +36,4 @@ const users = [...Array(24)].map((_, index) => ({
   ])
 }));
 
-export default users;
+export default rcList;

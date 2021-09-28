@@ -24,7 +24,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    email: Yup.string().required('UserID is required'),
     password: Yup.string().required('Password is required')
   });
 
@@ -35,8 +35,21 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: (values) => {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body : JSON.stringify({ userId: values.email, password : values.password })
+      };
+      fetch(process.env.REACT_APP_LOGIN_API + '/login', requestOptions)
+        .then(res => res.json())
+        .then((result) => {
+          if(result.token && result.status === 200){
+            localStorage.setItem('token', result.token)
+            window.location.reload();
+          }
+        })
+        .catch(e => console.log(e))
     }
   });
 
@@ -53,8 +66,8 @@ export default function LoginForm() {
           <TextField
             fullWidth
             autoComplete="username"
-            type="email"
-            label="Email address"
+            type="text"
+            label="User ID"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}

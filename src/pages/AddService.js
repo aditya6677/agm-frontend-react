@@ -14,14 +14,21 @@ import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import DatePicker from '@material-ui/lab/DatePicker';
 import React from 'react';
 import Box from '@material-ui/core/Box';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import moment from 'moment';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const token = localStorage.getItem('token') || null;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,25 +45,50 @@ const useStyles = makeStyles((theme) => ({
     },
     puccVal: {
         minHeight: '100%',
-        minWidth: "60%"
+        minWidth: "60%",
+        [theme.breakpoints.down(780)]: {
+            width: '-webkit-fill-available;'
+        }
     },
     name: {
-        minWidth: "70%"
+        minWidth: "70%",
+        [theme.breakpoints.down(780)]: {
+            width: '-webkit-fill-available;'
+        }
     },
     updateButtonn: {
         marginTop: '20px',
         backgroundColor: "#2d75b5"
+    },
+    recordFound: {
+        margin: '15px'
+    },
+    textFields: {
+        [theme.breakpoints.down(780)]: {
+            width: '-webkit-fill-available;'
+        }
     }
 }));
 
 
 export default function AddService() {
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar({
+            open: false,
+            type: '',
+            message: ''
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-access-token' : token },
             body: JSON.stringify({ rcNumber: rcSearch })
         };
         const response = await fetch(process.env.REACT_APP_BACKEND_API + '/getRcDetails', requestOptions);
@@ -64,8 +96,34 @@ export default function AddService() {
         setRecords(data);
     }
 
-    const handleUpdate = (e) => {
+    const handleUpdate = (e, key) => {
         e.preventDefault();
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-access-token' : token },
+            body: JSON.stringify({ info: records[key] })
+        };
+        fetch(process.env.REACT_APP_BACKEND_API + '/updateVehicle', requestOptions)
+            .then(response => response.json())
+            .then((result) => {
+                if (result.status == 200) {
+                    setSnackbar({
+                        open: true,
+                        type: 'success',
+                        message: result.message
+                    })
+                }
+                else {
+                    setSnackbar({
+                        open: true,
+                        type: 'error',
+                        message: result.message
+                    })
+                }
+            })
+            .catch((e) => {
+
+            });
     }
 
     const handleForm = (e, formIndex, key) => {
@@ -79,14 +137,39 @@ export default function AddService() {
         setRecords(newForm);
     }
 
-    const AddNewVehicle = async (e) => {
+    const AddNewVehicle = (e) => {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ info: newVehicle })
         };
-        const response = await fetch(process.env.REACT_APP_BACKEND_API + '/addNewVehicle', requestOptions);
+
+        fetch(process.env.REACT_APP_BACKEND_API + '/addNewVehicle', requestOptions)
+            .then(result => result.json())
+            .then((response) => {
+                if (response && response.status == 200) {
+                    setSnackbar({
+                        open: true,
+                        type: 'success',
+                        message: response.message
+                    })
+                }
+                else {
+                    setSnackbar({
+                        open: true,
+                        type: 'error',
+                        message: response.message
+                    })
+                }
+            }).catch((e) => {
+                setSnackbar({
+                    open: true,
+                    type: 'error',
+                    message: 'Vehicle Adding Failed'
+                })
+            })
+
     }
 
     const handleNewForm = (e, key) => {
@@ -100,6 +183,13 @@ export default function AddService() {
     }
 
     const classes = useStyles();
+    const [snackbar, setSnackbar] = React.useState({
+        open: false,
+        type: '',
+        message: ''
+
+    });
+
     const [rcSearch, setRcSearch] = React.useState("");
     const [records, setRecords] = React.useState([]);
     const [newVehicle, setVehicle] = React.useState({
@@ -111,7 +201,8 @@ export default function AddService() {
         fitnessIssue: null,
         fitnessExpiry: null,
         insuranceIssue: null,
-        insuranceExpiry: null
+        insuranceExpiry: null,
+        date : new Date()
     });
 
 
@@ -123,9 +214,7 @@ export default function AddService() {
                         Add Service
                     </Typography>
                     <Button
-                        variant="contained"
-                        component={RouterLink}
-                        to='#'
+                        onClick={e => window.location.reload(false)}
                         startIcon={<Icon icon={plusFill} />}
                     >
                         New Service
@@ -135,27 +224,31 @@ export default function AddService() {
                 <Card>
                     <Scrollbar>
                         <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
-                            <TextField id="outlined-basic" label="Vehicle/Mobile Number" variant="outlined" name="rcNumber" value={rcSearch} onChange={e => setRcSearch(e.target.value)} required />
-                            <Button className="searchVehicle" variant="contained" color="primary" type="submit">
+                            <TextField className={classes.textFields} id="outlined-basic" label="Vehicle/Mobile Number" variant="outlined" name="rcNumber" value={rcSearch} onChange={e => setRcSearch(e.target.value)} required />
+                            <Button className={classes.textFields + ' searchVehicle'} variant="contained" color="primary" type="submit">
                                 Search Vehicle
                             </Button>
                         </form>
                     </Scrollbar>
                 </Card>
 
+                {records && records.length > 0 ? <Typography className={classes.recordFound} gutterBottom>
+                    {records.length} Vehicle Found.
+                </Typography> : null}
+
                 {records && records.length > 0 ? records.map((val, key) => {
                     return (
                         <Card className={classes.response} key={key}>
-                            <form className={classes.result} autoComplete="off" onSubmit={handleUpdate}>
+                            <form className={classes.result} autoComplete="off" onSubmit={e => handleUpdate(e, key)}>
                                 <Grid container justifyContent="center" spacing={1}>
                                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                                        <TextField id="outlined-basic" label="Vehicle Number" variant="outlined" name="rcNumber" required onChange={e => handleForm(e, key, null)} />
+                                        <TextField className={classes.textFields} id="outlined-basic" label="Vehicle Number" variant="outlined" name="rcNumber" value={val.rcNumber} required onChange={e => handleForm(e, key, null)} />
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                                        <TextField className={classes.name} id="outlined-basic" label="Name" variant="outlined" name="name" required onChange={e => handleForm(e, key, null)} />
+                                        <TextField className={classes.name} id="outlined-basic" label="Name" variant="outlined" name="name" value={val.name} required onChange={e => handleForm(e, key, null)} />
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                                        <TextField className={classes.name} id="outlined-basic" label="Mobile Number" variant="outlined" name="mobile" required onChange={e => handleForm(e, key, null)} />
+                                        <TextField className={classes.name} id="outlined-basic" label="Mobile Number" variant="outlined" name="mobile" value={val.mobile} error={val.mobile && val.mobile.length < 10 ? true : false} required onChange={e => handleForm(e, key, null)} />
                                     </Grid>
 
                                     <Box mt="75px" />
@@ -172,7 +265,7 @@ export default function AddService() {
                                                 value={val.pucIssue}
                                                 inputFormat={'dd/MM/yyyy'}
                                                 onChange={e => handleForm(e, key, 'pucIssue')}
-                                                renderInput={(params) => <TextField {...params} />}
+                                                renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                             />
                                         </LocalizationProvider>
                                     </Grid>
@@ -183,7 +276,7 @@ export default function AddService() {
                                                 value={val.pucExpiry}
                                                 inputFormat={'dd/MM/yyyy'}
                                                 onChange={e => handleForm(e, key, 'pucExpiry')}
-                                                renderInput={(params) => <TextField {...params} />}
+                                                renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                             />
                                         </LocalizationProvider>
                                     </Grid>
@@ -201,7 +294,7 @@ export default function AddService() {
                                                 value={val.insuranceIssue}
                                                 inputFormat={'dd/MM/yyyy'}
                                                 onChange={e => handleForm(e, key, 'insuranceIssue')}
-                                                renderInput={(params) => <TextField {...params} />}
+                                                renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                             />
                                         </LocalizationProvider>
                                     </Grid>
@@ -212,7 +305,7 @@ export default function AddService() {
                                                 value={val.insuranceExpiry}
                                                 inputFormat={'dd/MM/yyyy'}
                                                 onChange={e => handleForm(e, key, 'insuranceExpiry')}
-                                                renderInput={(params) => <TextField {...params} />}
+                                                renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                             />
                                         </LocalizationProvider>
                                     </Grid>
@@ -230,7 +323,7 @@ export default function AddService() {
                                                 value={val.fitnessIssue}
                                                 inputFormat={'dd/MM/yyyy'}
                                                 onChange={e => handleForm(e, key, 'fitnessIssue')}
-                                                renderInput={(params) => <TextField {...params} />}
+                                                renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                             />
                                         </LocalizationProvider>
                                     </Grid>
@@ -241,7 +334,7 @@ export default function AddService() {
                                                 value={val.fitnessExpiry}
                                                 inputFormat={'dd/MM/yyyy'}
                                                 onChange={e => handleForm(e, key, 'fitnessExpiry')}
-                                                renderInput={(params) => <TextField {...params} />}
+                                                renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                             />
                                         </LocalizationProvider>
                                     </Grid>
@@ -256,15 +349,16 @@ export default function AddService() {
                     :
                     <Card className={classes.response}>
                         <form className={classes.result} autoComplete="off" onSubmit={AddNewVehicle}>
+                            <Typography gutterBottom>New Vehicle</Typography>
                             <Grid container justifyContent="center" spacing={1}>
                                 <Grid item xs={12} sm={12} md={4} lg={4}>
-                                    <TextField id="outlined-basic" label="Vehicle Number" variant="outlined" name="rcNumber" required onChange={e => handleNewForm(e)} />
+                                    <TextField className={classes.textFields} id="outlined-basic" label="Vehicle Number" variant="outlined" name="rcNumber" required onChange={e => handleNewForm(e)} />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={4} lg={4}>
                                     <TextField className={classes.name} id="outlined-basic" label="Name" variant="outlined" name="name" required onChange={e => handleNewForm(e)} />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={4} lg={4}>
-                                    <TextField className={classes.name} id="outlined-basic" label="Mobile Number" variant="outlined" name="mobile" required onChange={e => handleNewForm(e)} />
+                                    <TextField className={classes.name} id="outlined-basic" label="Mobile Number" variant="outlined" name="mobile" error={newVehicle.mobile && newVehicle.mobile.length < 10 ? true : false} required onChange={e => handleNewForm(e)} />
                                 </Grid>
 
                                 <Box mt="75px" />
@@ -283,7 +377,7 @@ export default function AddService() {
                                             name="pucIssue"
                                             onChange={e => handleNewForm(e, 'pucIssue')}
                                             inputFormat="dd/MM/yyyy"
-                                            renderInput={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                         />
                                     </LocalizationProvider>
                                 </Grid>
@@ -295,11 +389,10 @@ export default function AddService() {
                                             value={newVehicle.pucExpiry}
                                             name="pucExpiry"
                                             onChange={e => handleNewForm(e, 'pucExpiry')}
-                                            renderInput={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                         />
                                     </LocalizationProvider>
                                 </Grid>
-
 
                                 <Grid item xs={12} sm={12} md={4} lg={4}>
                                     <Button className={classes.puccVal} variant="outlined" color="primary">
@@ -314,7 +407,7 @@ export default function AddService() {
                                             name="insuranceIssue"
                                             onChange={e => handleNewForm(e, 'insuranceIssue')}
                                             inputFormat={'dd/MM/yyyy'}
-                                            renderInput={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                         />
                                     </LocalizationProvider>
                                 </Grid>
@@ -326,7 +419,7 @@ export default function AddService() {
                                             name="insuranceExpiry"
                                             onChange={e => handleNewForm(e, 'insuranceExpiry')}
                                             inputFormat={'dd/MM/yyyy'}
-                                            renderInput={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                         />
                                     </LocalizationProvider>
                                 </Grid>
@@ -345,7 +438,7 @@ export default function AddService() {
                                             name="fitnessIssue"
                                             onChange={e => handleNewForm(e, 'fitnessIssue')}
                                             inputFormat={'dd/MM/yyyy'}
-                                            renderInput={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                         />
                                     </LocalizationProvider>
                                 </Grid>
@@ -357,7 +450,7 @@ export default function AddService() {
                                             name="fitnessExpiry"
                                             onChange={e => handleNewForm(e, 'fitnessExpiry')}
                                             inputFormat={'dd/MM/yyyy'}
-                                            renderInput={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField className={classes.textFields} {...params} />}
                                         />
                                     </LocalizationProvider>
                                 </Grid>
@@ -368,6 +461,13 @@ export default function AddService() {
                         </form>
                     </Card>
                 }
+                <Stack spacing={2} sx={{ width: '100%' }}>
+                    <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleClose}>
+                        <Alert onClose={handleClose} severity={snackbar.type} sx={{ width: '100%' }}>
+                            {snackbar.message}
+                        </Alert>
+                    </Snackbar>
+                </Stack>
             </Container>
         </Page>
     );

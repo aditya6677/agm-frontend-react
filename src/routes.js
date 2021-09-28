@@ -2,29 +2,38 @@ import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
-//
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
 import Products from './pages/Products';
 import Blog from './pages/Blog';
-import User from './pages/User';
+import Vehicle from './pages/Vehicls';
+import Pollutions from './pages/Pollution';
+import Insurance from './pages/Insurance';
+import Fitness from './pages/Fitness';
 import NotFound from './pages/Page404';
 import AddService from './pages/AddService';
+import Tasks from "./pages/Tasks";
 
 // ----------------------------------------------------------------------
+
+const token = localStorage.getItem('token');
 
 export default function Router() {
   return useRoutes([
     {
       path: '/dashboard',
-      element: <DashboardLayout />,
+      element: token ? <DashboardLayout token={token} /> : <Navigate to="/login" />,
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <DashboardApp /> },
-        { path: 'pucc', element: <User /> },
-        { path: 'insurance', element: <Products /> },
-        { path: 'fitness', element: <Blog /> },
+        { path: 'list', element: <Vehicle /> },
+        { path: 'pucc', element: <Pollutions /> },
+        { path: 'insurance', element: <Insurance /> },
+        { path: 'fitness', element: <Fitness /> },
+        { path: 'task', element: <Tasks /> },
+        // { path: 'insurance', element: <Products /> },
+        // { path: 'fitness', element: <Blog /> },
         { path: 'add', element: <AddService /> }
       ]
     },

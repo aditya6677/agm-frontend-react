@@ -6,6 +6,7 @@ import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { LoginForm } from '../components/authentication/login';
 import AuthSocial from '../components/authentication/AuthSocial';
+import { Navigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +38,10 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
+  if (localStorage.getItem('token')) {
+    return <Navigate to={'/dashboard'} />;
+  }
+  
   return (
     <RootStyle title="Login | Minimal-UI">
       <MHidden width="mdDown">
@@ -56,7 +61,7 @@ export default function Login() {
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
           </Stack>
-          <AuthSocial />
+          {/* <AuthSocial /> */}
           <LoginForm />
         </ContentStyle>
       </Container>

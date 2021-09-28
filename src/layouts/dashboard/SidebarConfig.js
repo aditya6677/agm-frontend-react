@@ -18,9 +18,14 @@ const sidebarConfig = [
     icon: getIcon(pieChart2Fill)
   },
   {
-    title: 'Pollution',
-    path: '/dashboard/pucc',
+    title: 'Vehicles',
+    path: '/dashboard/list',
     icon: getIcon(peopleFill)
+  },
+  {
+    title: 'Pollutions',
+    path: '/dashboard/pucc',
+    icon: getIcon(lockFill)
   },
   {
     title: 'Insurance',
@@ -33,20 +38,20 @@ const sidebarConfig = [
     icon: getIcon(fileTextFill)
   },
   {
-    title: 'Todo',
-    path: '/login',
+    title: 'Task',
+    path: '/dashboard/task',
     icon: getIcon(lockFill)
   },
-  {
-    title: 'register',
-    path: '/register',
-    icon: getIcon(personAddFill)
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: getIcon(alertTriangleFill)
-  }
+  // {
+  //   title: 'register',
+  //   path: '/register',
+  //   icon: getIcon(personAddFill)
+  // },
+  // {
+  //   title: 'Not found',
+  //   path: '/404',
+  //   icon: getIcon(alertTriangleFill)
+  // }
 ];
 
 export default sidebarConfig;
