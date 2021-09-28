@@ -7,18 +7,7 @@ import { Icon } from '@iconify/react';
 // components
 import Page from '../components/Page';
 import {
-  AppTasks,
-  AppNewUsers,
-  AppBugReports,
-  AppItemOrders,
-  AppNewsUpdate,
-  AppWeeklySales,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppCurrentSubject,
-  AppConversionRates
+  AppTasks
 } from '../components/_dashboard/app';
 
 // ----------------------------------------------------------------------
