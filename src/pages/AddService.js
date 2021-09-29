@@ -139,7 +139,7 @@ export default function AddService() {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-access-token' : token },
             body: JSON.stringify({ info: newVehicle })
         };
 

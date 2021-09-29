@@ -86,7 +86,7 @@ export default function Blog() {
                         to="/dashboard/add"
                         startIcon={<Icon icon={plusFill} />}
                     >
-                        New Post
+                        New Vehicle
                     </Button>
                 </Stack>
 
@@ -121,7 +121,7 @@ export default function Blog() {
                         }
                     }
 
-                    let insDaysleft = moment(val.insuranceExpiry).diff(moment(val.insuranceIssue), 'days') + 1 || '';
+                    let insDaysleft = moment(val.insuranceExpiry).diff(moment(new Date()), 'days') || '';
 
                     if(filterOption != ''){
                         if(insDaysleft > filterOption)
@@ -155,22 +155,22 @@ export default function Blog() {
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
                                             <span className={classes.insHeading}>Insurance</span>
-                                            <span> <span className={classes.issuedOn}>Issued On </span> : {val.insuranceIssue ? moment(val.insuranceIssue).format('MMM Do YYYY') : ''}</span>
+                                            <span className={classes.mobileSpan}> <span className={classes.issuedOn}>Issued On </span> : {val.insuranceIssue ? moment(val.insuranceIssue).format('MMM Do YYYY') : ''}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            <span> <span className={classes.issuedOn}>Expiry On </span> : {val.insuranceExpiry ? moment(val.insuranceExpiry).format('MMM Do YYYY') : ''}</span>
+                                            <span className={classes.mobileSpan}> <span className={classes.issuedOn}>Expiry On </span> : {val.insuranceExpiry ? moment(val.insuranceExpiry).format('MMM Do YYYY') : ''}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            <span> {insDaysleft ? insDaysleft + ' Days Left' : null}</span>
+                                            <span className={classes.mobileSpan}> {insDaysleft && insDaysleft > 0 ? insDaysleft + ' Days Left' : null}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            {insDaysleft === 0 || insDaysleft > 0 ? <Label variant="ghost" color={'success'}>Active</Label> : <Label variant="ghost" color={'error'}>Expired</Label>}
+                                            {insDaysleft > 0 ? <Label variant="ghost" color={'success'}>Active</Label> : <Label variant="ghost" color={'error'}>Expired</Label>}
                                         </Typography>
                                     </Grid>
                                 </Grid>

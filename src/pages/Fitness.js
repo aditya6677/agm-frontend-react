@@ -87,7 +87,7 @@ export default function Blog() {
                         to="/dashboard/add"
                         startIcon={<Icon icon={plusFill} />}
                     >
-                        New Post
+                        New Vehicle
                     </Button>
                 </Stack>
 
@@ -122,7 +122,7 @@ export default function Blog() {
                         }
                     }
 
-                    let fitDaysLeft = moment(val.fitnessExpiry).diff(moment(val.fitnessIssue), 'days') + 1 || '';
+                    let fitDaysLeft = moment(val.fitnessExpiry).diff(moment(new Date()), 'days') || '';
 
                     if(filterOption != ''){
                         if(fitDaysLeft > filterOption)
@@ -157,22 +157,22 @@ export default function Blog() {
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
                                             <span className={classes.fitHeading}>Fitness</span>
-                                            <span> <span className={classes.issuedOn}>Issued On </span> : {val.fitnessIssue ? moment(val.fitnessIssue).format('MMM Do YYYY') : ''}</span>
+                                            <span className={classes.mobileSpan}> <span className={classes.issuedOn}>Issued On </span> : {val.fitnessIssue ? moment(val.fitnessIssue).format('MMM Do YYYY') : ''}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            <span> <span className={classes.issuedOn}>Expiry On </span> : {val.fitnessExpiry ? moment(val.fitnessExpiry).format('MMM Do YYYY') : ''}</span>
+                                            <span className={classes.mobileSpan}> <span className={classes.issuedOn}>Expiry On </span> : {val.fitnessExpiry ? moment(val.fitnessExpiry).format('MMM Do YYYY') : ''}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            <span> {fitDaysLeft ? fitDaysLeft + ' Days Left' : null}</span>
+                                            <span className={classes.mobileSpan}> {fitDaysLeft && fitDaysLeft > 0 ? fitDaysLeft + ' Days Left' : null}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            {fitDaysLeft === 0 || fitDaysLeft > 0 ? <Label variant="ghost" color={'success'}>Active</Label> : <Label variant="ghost" color={'error'}>Expired</Label>}
+                                            {fitDaysLeft > 0 ? <Label variant="ghost" color={'success'}>Active</Label> : <Label variant="ghost" color={'error'}>Expired</Label>}
                                         </Typography>
                                     </Grid>
                                 </Grid>

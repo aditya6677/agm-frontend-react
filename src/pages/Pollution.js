@@ -120,7 +120,7 @@ export default function Blog() {
                         }
                     }
 
-                    let puccDaysLeft = moment(val.pucExpiry).diff(moment(val.pucIssue), 'days') + 1 || '';
+                    let puccDaysLeft = moment(val.pucExpiry).diff(moment(new Date()), 'days') || '';
 
                     if(filterOption != ''){
                         if(puccDaysLeft > filterOption)
@@ -154,22 +154,22 @@ export default function Blog() {
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
                                             <span className={classes.pucHeading}>PUCC</span>
-                                            <span> <span className={classes.issuedOn}>Issued On </span> : {val.pucIssue ? moment(val.pucIssue).format('MMM Do YYYY') : ''}</span>
+                                            <span className={classes.mobileSpan}> <span className={classes.issuedOn}>Issued On </span> : {val.pucIssue ? moment(val.pucIssue).format('MMM Do YYYY') : ''}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            <span> <span className={classes.issuedOn}>Expiry On </span> : {val.pucExpiry ? moment(val.pucExpiry).format('MMM Do YYYY') : ''}</span>
+                                            <span className={classes.mobileSpan}> <span className={classes.issuedOn}>Expiry On </span> : {val.pucExpiry ? moment(val.pucExpiry).format('MMM Do YYYY') : ''}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            <span> {puccDaysLeft ? puccDaysLeft + ' Days Left' : null}</span>
+                                            <span className={classes.mobileSpan}> {puccDaysLeft && puccDaysLeft > 0 ? puccDaysLeft + ' Days Left' : null}</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={3} lg={3}>
                                         <Typography variant="body2" sx={{ opacity: 0.82 }}>
-                                            {puccDaysLeft === 0 || puccDaysLeft > 0 ? <Label variant="ghost" color={'success'}>Active</Label> : <Label variant="ghost" color={'error'}>Expired</Label>}
+                                            {puccDaysLeft > 0 ? <Label variant="ghost" color={'success'}>Active</Label> : <Label variant="ghost" color={'error'}>Expired</Label>}
 
                                         </Typography>
                                     </Grid>
