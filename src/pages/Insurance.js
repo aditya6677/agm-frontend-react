@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import moment from 'moment';
 import Label from '../components/Label';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const token = localStorage.getItem('token');
 
@@ -37,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
     },
     issuedOn: {
         fontWeight: 600
+    },
+    mobileSpan: {
+        [theme.breakpoints.down(780)]: {
+            display: 'block'
+        }
     }
 }));
 
@@ -56,6 +63,8 @@ export default function Blog() {
     const [vehicle, setVehicles] = useState([]);
     const [filterName, setFilterName] = useState('');
     const [filterOption, setFilter] = useState('');
+    const [loader, setLoader] = useState(true);
+
 
 
 
@@ -70,7 +79,13 @@ export default function Blog() {
         };
         fetch(process.env.REACT_APP_BACKEND_API + '/getRcList', requestOptions)
             .then(res => res.json())
-            .then(result => setVehicles(result.info))
+            .then((result) => {
+                setVehicles(result.info);
+                setLoader(false);
+            })
+            .catch((e) => {
+                setVehicles([]);
+            })
     }, [])
 
     return (
@@ -78,7 +93,7 @@ export default function Blog() {
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                    Insurance
+                        Insurance
                     </Typography>
                     <Button
                         variant="contained"
@@ -91,7 +106,7 @@ export default function Blog() {
                 </Stack>
 
                 <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-                    <TextField id="standard-basic" label="Standard" color="success" autoComplete='off' variant="standard" onChange = {e => setFilterName(e.target.value)}/>
+                    <TextField id="standard-basic" label="Standard" color="success" autoComplete='off' variant="standard" onChange={e => setFilterName(e.target.value)} />
                     <TextField
                         id="outlined-select-currency"
                         size="small"
@@ -109,6 +124,12 @@ export default function Blog() {
                     </TextField>
                 </Stack>
 
+                {
+                    loader ? <Stack sx={{ color: 'grey.500', margin : '10px 0' }} spacing={2} direction="row" alignItems="center" justifyContent="center">
+                        <CircularProgress color="success" />
+                    </Stack> : null
+                }
+
                 {vehicle && vehicle.length > 0 ? vehicle.map((val, key) => {
 
                     if (filterName != '') {
@@ -123,8 +144,8 @@ export default function Blog() {
 
                     let insDaysleft = moment(val.insuranceExpiry).diff(moment(new Date()), 'days') || '';
 
-                    if(filterOption != ''){
-                        if(insDaysleft > filterOption)
+                    if (filterOption != '') {
+                        if (insDaysleft > filterOption)
                             return;
                     }
 

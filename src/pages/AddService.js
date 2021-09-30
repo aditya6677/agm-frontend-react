@@ -7,6 +7,7 @@ import {
     Button,
     Container,
     Typography,
+    Divider
 } from '@material-ui/core';
 // components
 import Page from '../components/Page';
@@ -21,6 +22,8 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -65,7 +68,15 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down(780)]: {
             width: '-webkit-fill-available;'
         }
+    },
+    mobileForm : {
+        [theme.breakpoints.down(780)]: {
+            width: '100%',
+            margin : '15px 10px',
+            backgroundColor : 'darkgray'
+        }
     }
+
 }));
 
 
@@ -83,15 +94,22 @@ export default function AddService() {
     };
 
     const handleSubmit = async (e) => {
+        setLoader(true);
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'x-access-token' : token },
             body: JSON.stringify({ rcNumber: rcSearch })
         };
-        const response = await fetch(process.env.REACT_APP_BACKEND_API + '/getRcDetails', requestOptions);
-        const data = await response.json();
-        setRecords(data);
+        fetch(process.env.REACT_APP_BACKEND_API + '/getRcDetails', requestOptions)
+        .then(res => res.json())
+        .then((result) => {
+            setRecords(result.info);
+            setLoader(false);
+        })
+        .catch((e)=>{
+            setRecords([]);
+        })
     }
 
     const handleUpdate = (e, key) => {
@@ -202,6 +220,7 @@ export default function AddService() {
         insuranceExpiry: null,
         date : new Date()
     });
+    const [loader, setLoader] = React.useState(false);
 
 
     return (
@@ -230,6 +249,12 @@ export default function AddService() {
                     </Scrollbar>
                 </Card>
 
+                {
+                    loader ? <Stack sx={{ color: 'grey.500', margin : '10px 0' }} spacing={2} direction="row" alignItems="center" justifyContent="center">
+                        <CircularProgress color="success" />
+                    </Stack> : null
+                }
+
                 {records && records.length > 0 ? <Typography className={classes.recordFound} gutterBottom>
                     {records.length} Vehicle Found.
                 </Typography> : null}
@@ -250,6 +275,7 @@ export default function AddService() {
                                     </Grid>
 
                                     <Box mt="75px" />
+                                    <Divider className={classes.mobileForm} />
 
                                     <Grid item xs={12} sm={12} md={4} lg={4}>
                                         <Button className={classes.puccVal} variant="outlined" color="primary">
@@ -280,6 +306,9 @@ export default function AddService() {
                                     </Grid>
 
 
+                                    <Divider className={classes.mobileForm} />
+
+
                                     <Grid item xs={12} sm={12} md={4} lg={4}>
                                         <Button className={classes.puccVal} variant="outlined" color="primary">
                                             Insurance Validity
@@ -307,6 +336,8 @@ export default function AddService() {
                                             />
                                         </LocalizationProvider>
                                     </Grid>
+
+                                    <Divider className={classes.mobileForm} />
 
 
                                     <Grid item xs={12} sm={12} md={4} lg={4}>
@@ -360,6 +391,7 @@ export default function AddService() {
                                 </Grid>
 
                                 <Box mt="75px" />
+                                <Divider className={classes.mobileForm} />
 
                                 <Grid item xs={12} sm={12} md={4} lg={4}>
                                     <Button className={classes.puccVal} variant="outlined" color="primary">
@@ -392,6 +424,8 @@ export default function AddService() {
                                     </LocalizationProvider>
                                 </Grid>
 
+                                <Divider className={classes.mobileForm} />
+
                                 <Grid item xs={12} sm={12} md={4} lg={4}>
                                     <Button className={classes.puccVal} variant="outlined" color="primary">
                                         Insurance Validity
@@ -421,6 +455,8 @@ export default function AddService() {
                                         />
                                     </LocalizationProvider>
                                 </Grid>
+
+                                <Divider className={classes.mobileForm} />
 
 
                                 <Grid item xs={12} sm={12} md={4} lg={4}>

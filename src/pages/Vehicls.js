@@ -3,12 +3,12 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 import { Grid, Card, Button, Container, Stack, Typography, Divider, TextField, MenuItem } from '@material-ui/core';
 import Page from '../components/Page';
-import { BlogPostsSort, BlogPostsSearch } from '../components/_dashboard/blog';
 import { makeStyles } from '@material-ui/styles';
 import { useState, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import moment from 'moment';
 import Label from '../components/Label';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const token = localStorage.getItem('token');
 
@@ -41,9 +41,9 @@ const useStyles = makeStyles((theme) => ({
   },
   mobileSpan: {
     [theme.breakpoints.down(780)]: {
-        display : 'block'
+      display: 'block'
     }
-}
+  }
 }));
 
 const SORT_OPTIONS = [
@@ -58,6 +58,7 @@ export default function Blog() {
   const [vehicle, setVehicles] = useState([]);
   const [filterName, setFilterName] = useState('');
   const [filterOption, setFilter] = useState(1);
+  const [loader, setLoader] = useState(true);
 
   const sortAryByOldest = (ary) => {
     let newAry = ary.sort(function (a, b) {
@@ -85,15 +86,21 @@ export default function Blog() {
     };
     fetch(process.env.REACT_APP_BACKEND_API + '/getRcList', requestOptions)
       .then(res => res.json())
-      .then(result => setVehicles(result.info))
+      .then((result) => {
+        setVehicles(result.info);
+        setLoader(false);
+      })
+      .catch((e) => {
+        setVehicles([]);
+      })
   }, [])
 
   let vehicleList = vehicle || [];
-  if(vehicleList.length > 0 && filterOption && filterOption == 1 ){
+  if (vehicleList.length > 0 && filterOption && filterOption == 1) {
     vehicleList = sortAryByOldest(vehicle);
   }
 
-  if(vehicleList.length > 0 && filterOption && filterOption == 0 ){
+  if (vehicleList.length > 0 && filterOption && filterOption == 0) {
     vehicleList = sortAryByLatest(vehicle);
   }
 
@@ -132,6 +139,12 @@ export default function Blog() {
             ))}
           </TextField>
         </Stack>
+
+        {
+          loader ? <Stack sx={{ color: 'grey.500', margin : '10px 0' }} spacing={2} direction="row" alignItems="center" justifyContent="center">
+            <CircularProgress color="success" />
+          </Stack> : null
+        }
 
         {vehicleList.length > 0 ? vehicleList.map((val, key) => {
 
