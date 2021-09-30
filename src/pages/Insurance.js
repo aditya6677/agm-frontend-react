@@ -106,7 +106,7 @@ export default function Blog() {
                 </Stack>
 
                 <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-                    <TextField id="standard-basic" label="Standard" color="success" autoComplete='off' variant="standard" onChange={e => setFilterName(e.target.value)} />
+                    <TextField id="standard-basic" label="Standard" color="success" autoComplete='off' variant="standard" onChange={e => setFilterName((e.target.value).toUpperCase())} />
                     <TextField
                         id="outlined-select-currency"
                         size="small"

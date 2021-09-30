@@ -99,12 +99,12 @@ export default function AddService() {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'x-access-token' : token },
-            body: JSON.stringify({ rcNumber: rcSearch })
+            body: JSON.stringify({ rcNumber: (rcSearch).toUpperCase() })
         };
         fetch(process.env.REACT_APP_BACKEND_API + '/getRcDetails', requestOptions)
         .then(res => res.json())
         .then((result) => {
-            setRecords(result.info);
+            setRecords(result);
             setLoader(false);
         })
         .catch((e)=>{
@@ -191,7 +191,7 @@ export default function AddService() {
     const handleNewForm = (e, key) => {
         let vehicle = { ...newVehicle };
         if (!key) {
-            vehicle[e.target.name] = e.target.value;
+            vehicle[e.target.name] = (e.target.value).toUpperCase();
         } else {
             vehicle[key] = e.toString();
         }
@@ -241,7 +241,7 @@ export default function AddService() {
                 <Card>
                     <Scrollbar>
                         <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
-                            <TextField className={classes.textFields} id="outlined-basic" label="Vehicle/Mobile Number" variant="outlined" name="rcNumber" value={rcSearch} onChange={e => setRcSearch(e.target.value)} required />
+                            <TextField className={classes.textFields} id="outlined-basic" label="Vehicle/Mobile Number" variant="outlined" name="rcNumber" value={rcSearch} onChange={e => setRcSearch((e.target.value).toUpperCase())} required />
                             <Button className={classes.textFields + ' searchVehicle'} variant="contained" color="primary" type="submit">
                                 Search Vehicle
                             </Button>
@@ -265,7 +265,7 @@ export default function AddService() {
                             <form className={classes.result} autoComplete="off" onSubmit={e => handleUpdate(e, key)}>
                                 <Grid container justifyContent="center" spacing={1}>
                                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                                        <TextField className={classes.textFields} id="outlined-basic" label="Vehicle Number" variant="outlined" name="rcNumber" value={val.rcNumber} required onChange={e => handleForm(e, key, null)} />
+                                        <TextField className={classes.textFields} id="outlined-basic" label="Vehicle Number" variant="outlined" name="rcNumber" value={(val.rcNumber).toUpperCase()} required onChange={e => handleForm(e, key, null)} />
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={4} lg={4}>
                                         <TextField className={classes.name} id="outlined-basic" label="Name" variant="outlined" name="name" value={val.name} required onChange={e => handleForm(e, key, null)} />
