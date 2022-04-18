@@ -95,6 +95,8 @@ export default function AdmissionForm() {
         learningNumber : null,
         trainigStartDate : null,
         trainingEndDate : null,
+        mobileNumber : null,
+        form5Serial : null
     });
 
     Date.prototype.addDays = function(days) {
@@ -103,15 +105,44 @@ export default function AdmissionForm() {
         return date;
     }
 
-    const addStudent = async(e) => {
+    const addStudent = (e) => {
         e.preventDefault();
-        const blob = await pdf(MyDocument('Hii')).toBlob();
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = 'file';
-        a.click();
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-access-token' : token },
+            body: JSON.stringify({ ...form })
+        };
+        fetch(process.env.REACT_APP_BACKEND_API + '/addNewStudent', requestOptions)
+        .then(res => res.json())
+        .then(async(out)=> {
+            if(out && out.status == 200 && out.data){
+                const blob = await pdf(MyDocument(out.data)).toBlob();
+                let url = window.URL.createObjectURL(blob);
+                let a = document.createElement('a');
+                a.href = url;
+                a.download = out.data.studentName;
+                a.click();
+                setSnackbar({
+                    open: true,
+                    type: 'success',
+                    message: 'Student Added Successfully'
+                });
+                window.location = '/dashboard/admission/list';
+            }
+        })
+        .catch(e => console.log(e))
     }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar({
+            open: false,
+            type: '',
+            message: ''
+        });
+    };
 
     const handleForm = (e, key) => {
         let newform = { ...form };
@@ -128,6 +159,12 @@ export default function AdmissionForm() {
     }
 
     const classes = useStyles();
+    const [snackbar, setSnackbar] = React.useState({
+        open: false,
+        type: '',
+        message: ''
+
+    });
     return (
         <Page title="Admission | Agrahari Management">
             <Container>
@@ -184,7 +221,24 @@ export default function AdmissionForm() {
                                 />
                             </LocalizationProvider>
                         </div>
-
+                        <div style={{ display: 'flex', marginTop: '20px' }}>
+                            <TextField
+                                style={{ width: '50%', marginRight: '10px' }}
+                                required
+                                id="outlined-required"
+                                label="Mobile Number"
+                                name="mobileNumber"
+                                onChange={e => handleForm(e)}
+                            />
+                            <TextField
+                                style={{ width: '50%' }}
+                                required
+                                id="outlined-required"
+                                label="Form 5 Serial No"
+                                name='form5Serial'
+                                onChange={e => handleForm(e)}
+                            />
+                        </div>
                         <div style={{ display: 'flex', marginTop: '20px' }}>
                             <TextField
                                 style={{ width: '50%', marginRight: '10px' }}
@@ -210,7 +264,7 @@ export default function AdmissionForm() {
                                     value={form.trainigStartDate}
                                     inputFormat={'dd/MM/yyyy'}
                                     onChange={e => handleForm(e, 'trainigStartDate')}
-                                    renderInput={(params) => <TextField style={{ width: '50%', marginRight: '10px' }} {...params} />}
+                                    renderInput={(params) => <TextField required style={{ width: '50%', marginRight: '10px' }} {...params} />}
                                 />
                             </LocalizationProvider>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -232,6 +286,13 @@ export default function AdmissionForm() {
                         </div>
                     </form>
                 </Card>
+                <Stack spacing={2} sx={{ width: '100%' }}>
+                    <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleClose}>
+                        <Alert onClose={handleClose} severity={snackbar.type} sx={{ width: '100%' }}>
+                            {snackbar.message}
+                        </Alert>
+                    </Snackbar>
+                </Stack>
             </Container>
         </Page>
     )

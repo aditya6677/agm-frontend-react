@@ -95,15 +95,21 @@ Date.prototype.addDays = function(days) {
     return date;
 }
 
-var rows = (startDate) => Array(30).fill().map(function (p, i) {
-    let date = new Date('Sun Apr 17 2022 23:52:31 GMT+0530 (India Standard Time)');
-    let newDate = date.addDays(i);
+const convertDDmmYYYYY = (newDate) => {
+    newDate = new Date(newDate);
     const yyyy = newDate.getFullYear();
     let mm = newDate.getMonth() + 1; // Months start at 0!
     let dd = newDate.getDate();
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
     const today = dd + '/' + mm + '/' + yyyy;
+    return today;
+}
+
+var rows = (startDate) => Array(30).fill().map(function (p, i) {
+    let date = new Date(startDate);
+    let newDate = date.addDays(i);
+    let today = convertDDmmYYYYY(newDate);
     const isSunday = newDate.getDay() == 0;
     return (
         <View style={styles.tableRow} key={i}>
@@ -135,9 +141,9 @@ const MyDocument = (data) => (
                     <Text style={{ fontSize: '15px', textAlign: 'center' }}>FORM 15 [See Rule 27(I)]</Text>
                     <Text style={{ fontSize: '15px', textAlign: 'center' }}>REGISTER SHOWING THE DRIVING HOURS SPENT BY A TRAINEE</Text>
                     <Text style={{ fontSize: '13px' }}>Name of the School/Establishment : Shri Agrahari Motor Driving School, Naugarh, Tetari Bazar, Siddharth Nagar</Text>
-                    <Text style={{ fontSize: '12px', marginTop: '5px' }}>Name of Trainee : Shree Agrahari</Text>
-                    <Text style={{ fontSize: '12px' }}>Enrollment Number : 113</Text>
-                    <Text style={{ fontSize: '12px' }}>Date of Enrollment : 11/02/2022</Text>
+                    <Text style={{ fontSize: '12px', marginTop: '5px' }}>Name of Trainee : {data.studentName}</Text>
+                    <Text style={{ fontSize: '12px' }}>Enrollment Number : {data.enrollmnentNo}</Text>
+                    <Text style={{ fontSize: '12px' }}>Date of Enrollment : {convertDDmmYYYYY(data.trainigStartDate)}</Text>
                 </View>
                 <View style={styles.table}>
                     <View style={styles.tableRow}>
@@ -145,7 +151,7 @@ const MyDocument = (data) => (
                             <Text style={styles.tableCellHeader}>Date</Text>
                         </View>
                         <View style={styles.tableColHeaderHour}>
-                            <Text style={styles.tableCellHeader}>Hour Spent in Actual Driving</Text>
+                            <Text style={styles.tableCellHeader}>Hour Spent in Actual Driving From...hrs To...hrs</Text>
                         </View>
                         <View style={styles.tableColHeaderHour}>
                             <Text style={styles.tableCellHeader}>Class of Vehicle</Text>
@@ -157,7 +163,7 @@ const MyDocument = (data) => (
                             <Text style={styles.tableCellHeader}>Signature or Thumb-impression of Trainee</Text>
                         </View>
                     </View>
-                    {rows(12)}
+                    {rows(data.trainigStartDate)}
                 </View>
             </Page>
         </Document>

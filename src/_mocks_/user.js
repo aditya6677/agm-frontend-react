@@ -4,13 +4,14 @@ import { sample } from 'lodash';
 import { mockImgAvatar } from '../utils/mockImages';
 
 // ----------------------------------------------------------------------
+const token = localStorage.getItem('token') || null;
 
 const rcList = async() => {
   const requestOptions = {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-access-token' : token },
   };
-  const response = await fetch(process.env.REACT_APP_BACKEND_API + '/getRcList', requestOptions);
+  const response = await fetch(process.env.REACT_APP_BACKEND_API + '/students', requestOptions);
   const data = await response.json();
   return data.info;
 }

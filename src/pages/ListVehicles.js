@@ -4,6 +4,7 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import moment from 'moment';
 // material
 import {
   Card,
@@ -26,20 +27,21 @@ import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
-import users from 'src/_mocks_/user';
 //
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'E. No', label: 'E. No', alignRight: false },
   { id: 'Name', label: 'Name', alignRight: false },
   { id: 'Father Name', label: 'Father Name', alignRight: false },
   { id: 'Traing Start Date', label: 'Traing Start Date', alignRight: false },
   { id: 'Traing End Date', label: 'Traing End Date', alignRight: false },
-  { id: 'status', label: 'Expire In', alignRight: false }
+  { id: 'status', label: 'Status', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
+const token = localStorage.getItem('token') || null;
 
 
 
@@ -55,9 +57,9 @@ export default function User() {
   useEffect(() => {
     const requestOptions = {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-access-token': token },
     };
-    fetch(process.env.REACT_APP_BACKEND_API + '/getRcList', requestOptions)
+    fetch(process.env.REACT_APP_BACKEND_API + '/students', requestOptions)
       .then(res => res.json())
       .then(result => SetUser(result.info))
   }, [])
@@ -71,9 +73,33 @@ export default function User() {
     setPage(0);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+  const convertDDmmYYYYY = (newDate) => {
+    newDate = new Date(newDate);
+    const yyyy = newDate.getFullYear();
+    let mm = newDate.getMonth() + 1; // Months start at 0!
+    let dd = newDate.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    const today = dd + '/' + mm + '/' + yyyy;
+    return today;
+  }
 
-  const filteredUsers = users;
+  const checkExpire = (date) => {
+    let testDate = new Date(date);
+    let today = new Date();
+    var a = moment(testDate);
+    var b = moment(today);
+    var diffDays = b.diff(a, 'days');
+    if(diffDays < 0){
+      return 'success'
+    }
+    else 
+      return 'error'
+  }
+
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+
+  const filteredUsers = USERLIST;
 
   const isUserNotFound = filteredUsers && filteredUsers.length === 0;
 
@@ -109,21 +135,23 @@ export default function User() {
                   {filteredUsers && filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, studentName, fatherName, trainingStartDate, trainingEndDate, status } = row;
+                      const { enrollmnentNo, studentName, fatherName, trainigStartDate, trainingEndDate } = row;
 
+                      const isExpired = checkExpire(trainingEndDate);
                       return (
-                        <TableRow hover key={id} tabIndex={-1}>
+                        <TableRow hover key={enrollmnentNo} tabIndex={-1}>
+                          <TableCell align="left">{enrollmnentNo}</TableCell>
                           <TableCell align="left">{studentName}</TableCell>
                           <TableCell align="left">{fatherName}</TableCell>
-                          <TableCell align="left">{trainingStartDate}</TableCell>
-                          <TableCell align="left">{trainingEndDate}</TableCell>
+                          <TableCell align="left">{convertDDmmYYYYY(trainigStartDate)}</TableCell>
+                          <TableCell align="left">{convertDDmmYYYYY(trainingEndDate)}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
-                              color={(status === 'expired' && 'error') || 'success'}
+                              color={isExpired === 'error' ? 'error' : 'success'}
                             >
-                              {status}
-                              {/* {sentenceCase(status)} */}
+                              {isExpired == 'error' ? 'Trainig Complete' : 'Running'}
+
                             </Label>
                           </TableCell>
                           <TableCell align="right">
