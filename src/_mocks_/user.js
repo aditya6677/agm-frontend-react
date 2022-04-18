@@ -16,24 +16,12 @@ const rcList = async() => {
 }
 
 const users = [...Array(24)].map((_, index) => ({
-  id: faker.datatype.uuid(),
-  avatarUrl: mockImgAvatar(index + 1),
-  name: faker.name.findName(),
-  company: faker.company.companyName(),
-  isVerified: faker.datatype.boolean(),
+  id : 1,
+  studentName : 'Sandeep',
+  fatherName : mockImgAvatar(index + 1),
+  trainingStartDate: faker.name.findName(),
+  trainingEndDate: faker.company.companyName(),
   status: sample(['active', 'expired']),
-  role: sample([
-    'Leader',
-    'Hr Manager',
-    'UI Designer',
-    'UX Designer',
-    'UI/UX Designer',
-    'Project Manager',
-    'Backend Developer',
-    'Full Stack Designer',
-    'Front End Developer',
-    'Full Stack Developer'
-  ])
 }));
 
-export default rcList;
+export default users;

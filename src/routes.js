@@ -12,6 +12,9 @@ import Fitness from './pages/Fitness';
 import NotFound from './pages/Page404';
 import AddService from './pages/AddService';
 import Tasks from "./pages/Tasks";
+import AdmissionForm from './pages/AdmissionForm';
+import RenderPdf from './pages/DownloadPdf';
+import User from './pages/ListVehicles'
 
 // ----------------------------------------------------------------------
 
@@ -30,9 +33,10 @@ export default function Router() {
         { path: 'insurance', element: <Insurance /> },
         { path: 'fitness', element: <Fitness /> },
         { path: 'task', element: <Tasks /> },
-        // { path: 'insurance', element: <Products /> },
-        // { path: 'fitness', element: <Blog /> },
-        { path: 'add', element: <AddService /> }
+        { path: 'add', element: <AddService /> },
+        { path: 'admission', element: <AdmissionForm /> },
+        { path: 'admission/download', element: <RenderPdf /> },
+        { path: 'admission/list', element: <User /> }
       ]
     },
     {
