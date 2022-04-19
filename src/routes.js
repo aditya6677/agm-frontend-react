@@ -14,7 +14,7 @@ import AddService from './pages/AddService';
 import Tasks from "./pages/Tasks";
 import AdmissionForm from './pages/AdmissionForm';
 import RenderPdf from './pages/DownloadPdf';
-import User from './pages/ListVehicles'
+import User from './pages/ListStudents'
 
 // ----------------------------------------------------------------------
 

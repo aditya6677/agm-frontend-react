@@ -7,12 +7,24 @@ import printerOutline from '@iconify/icons-eva/printer-outline'
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
 import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@material-ui/core';
-
+import MyDocument from 'src/components/PdfDocument';
+import { pdf } from '@react-pdf/renderer';
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu() {
+export default function UserMoreMenu(props) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const student = props.data;
+
+  const printRegister = async() => {
+    const blob = await pdf(MyDocument(student)).toBlob();
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = student.studentName;
+    a.click();
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -30,7 +42,7 @@ export default function UserMoreMenu() {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem sx={{ color: 'text.secondary' }}>
+        <MenuItem sx={{ color: 'text.secondary' }} onClick={printRegister}>
           <ListItemIcon>
             <Icon icon={printerOutline} width={24} height={24} />
           </ListItemIcon>

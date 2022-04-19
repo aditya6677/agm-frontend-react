@@ -155,7 +155,7 @@ export default function User() {
                             </Label>
                           </TableCell>
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            <UserMoreMenu data={row}/>
                           </TableCell>
                         </TableRow>
                       );
