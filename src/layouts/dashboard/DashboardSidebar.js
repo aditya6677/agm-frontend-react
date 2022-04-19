@@ -64,10 +64,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <Box sx={{ mb: 5, mx: 2.5 }} style={{marginTop:'20px'}}>
         <Link underline="none" component={RouterLink} to="#">
-          <AccountStyle>
+          <AccountStyle style={{border : '1px solid'}}>
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+              <Typography variant="subtitle2" style={{fontSize : '15px'}} sx={{ color: 'text.primary' }}>
                 {account.displayName}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -96,9 +96,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         >
           <Box
             component="img"
-            src="/static/illustrations/illustration_avatar.png"
+            src="/static/illustrations/logo.png"
             sx={{ width: 100, position: 'absolute', top: -50 }}
           />
+          <p style={{fontSize : '13px', color : 'green', fontWeight : 'bold'}}>Shri Agrahari Sewa Sansthan</p>
         </Stack>
       </Box>
     </Scrollbar>

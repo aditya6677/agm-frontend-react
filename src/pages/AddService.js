@@ -61,6 +61,11 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '20px',
         backgroundColor: "#2d75b5"
     },
+    deleteBtn: {
+        marginTop: '20px',
+        marginLeft : '20px',
+        backgroundColor: "#b41010"
+    },
     recordFound: {
         margin: '15px'
     },
@@ -369,6 +374,9 @@ export default function AddService() {
                                     </Grid>
                                     <Button className={classes.updateButtonn} variant="contained" type="submit">
                                         Update Vehicle
+                                    </Button>
+                                    <Button className={classes.deleteBtn} variant="contained">
+                                        Delete Vehicle
                                     </Button>
                                 </Grid>
                             </form>

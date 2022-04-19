@@ -45,10 +45,14 @@ export default function Login() {
     <RootStyle title="Login | Minimal-UI">
       <MHidden width="mdDown">
         <SectionStyle>
-          <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+          <Typography style={{textAlign : 'center'}} variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
             Hi, Welcome Back
           </Typography>
-          <img src="/static/illustrations/illustration_login.png" alt="login" />
+          <img src="/static/logo.png" alt="login" />
+          <div style={{margin : '20px', textAlign:'center', color:'green'}}>
+            <p>Shri Agrahari Sewa Sansthan, Naugarh, Siddharth Nagar</p>
+            <p>Contact : +91 9839351250</p>
+          </div>
         </SectionStyle>
       </MHidden>
 
