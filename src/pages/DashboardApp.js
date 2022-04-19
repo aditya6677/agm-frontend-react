@@ -55,7 +55,7 @@ export default function DashboardApp(props) {
 
 
   return (
-    <Page title="Dashboard | Minimal-UI">
+    <Page title="Dashboard | Shri-Agrahari">
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4">Hi, Welcome back</Typography>

@@ -15,7 +15,7 @@ import {
 export default function DashboardApp(props) {
   console.log(props.token);
   return (
-    <Page title="Tasks | Minimal-UI">
+    <Page title="Tasks | Shri-Agrahari">
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Tasks</Typography>
