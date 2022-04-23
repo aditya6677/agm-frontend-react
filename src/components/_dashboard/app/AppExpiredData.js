@@ -5,6 +5,7 @@ import personAddFill from '@iconify/icons-eva/person-add-fill';
 import carFill from '@iconify/icons-eva/car-fill';
 import settingsFill from '@iconify/icons-eva/settings-fill';
 import shakeOutline from '@iconify/icons-eva/shake-outline';
+import stopFilled from '@iconify/icons-eva/stop-circle-fill'
 
 // material
 import { Box, Grid, Card, Paper, Typography, CardHeader, CardContent } from '@material-ui/core';
@@ -37,32 +38,32 @@ function SiteItem({ site }) {
   );
 }
 
-export default function AppTrafficBySite(props) {
+export default function AppExpriredData(props) {
   const SOCIALS = [
     {
-      name: 'Students',
-      value: props?.student?.totalStudent,
-      icon: <Icon icon={personAddFill} color="#f79432" width={32} height={32} />
-    },
-    {
-      name: 'PUCC',
-      value: props?.vehicle?.puccList,
-      icon: <Icon icon={carFill} color="#f79432" width={32} height={32} />
-    },
-    {
-      name: 'Fitness',
-      value: props?.vehicle?.fitList,
-      icon: <Icon icon={settingsFill} color="#f79432" width={32} height={32} />
-    },
-    {
-      name: 'Insurance',
-      value: props?.vehicle?.insList,
-      icon: <Icon icon={shakeOutline} color="#f79432" width={32} height={32} />
-    }
+        name: 'Total Expired',
+        value: props?.data?.totalExpired,
+        icon: <Icon icon={stopFilled} color="#1877F2" width={32} height={32} />
+      },
+      {
+        name: 'PUCC',
+        value: props?.data?.expiredPuc,
+        icon: <Icon icon={stopFilled} color="#DF3E30" width={32} height={32} />
+      },
+      {
+        name: 'Fitness',
+        value: props?.data?.expiredFitness,
+        icon: <Icon icon={stopFilled} color="#DF3E30" width={32} height={32} />
+      },
+      {
+        name: 'Insurance',
+        value: props?.data?.expiredIns,
+        icon: <Icon icon={stopFilled} color="#DF3E30" width={32} height={32} />
+      }
   ];
   return (
     <Card>
-      <CardHeader title="Total Data" />
+      <CardHeader title="Exprired Data" />
       <CardContent>
         <Grid container spacing={2}>
           {SOCIALS.map((site) => (

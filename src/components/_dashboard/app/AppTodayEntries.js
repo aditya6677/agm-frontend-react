@@ -5,7 +5,7 @@ import personAddFill from '@iconify/icons-eva/person-add-fill';
 import carFill from '@iconify/icons-eva/car-fill';
 import settingsFill from '@iconify/icons-eva/settings-fill';
 import shakeOutline from '@iconify/icons-eva/shake-outline';
-
+import calendarFill from '@iconify/icons-eva/calendar-fill';
 // material
 import { Box, Grid, Card, Paper, Typography, CardHeader, CardContent } from '@material-ui/core';
 // utils
@@ -37,32 +37,32 @@ function SiteItem({ site }) {
   );
 }
 
-export default function AppTrafficBySite(props) {
+export default function AppTodayData(props) {
   const SOCIALS = [
     {
-      name: 'Students',
-      value: props?.student?.totalStudent,
-      icon: <Icon icon={personAddFill} color="#f79432" width={32} height={32} />
-    },
-    {
-      name: 'PUCC',
-      value: props?.vehicle?.puccList,
-      icon: <Icon icon={carFill} color="#f79432" width={32} height={32} />
-    },
-    {
-      name: 'Fitness',
-      value: props?.vehicle?.fitList,
-      icon: <Icon icon={settingsFill} color="#f79432" width={32} height={32} />
-    },
-    {
-      name: 'Insurance',
-      value: props?.vehicle?.insList,
-      icon: <Icon icon={shakeOutline} color="#f79432" width={32} height={32} />
-    }
+        name: 'Total Today',
+        value: props?.data?.totalToday,
+        icon: <Icon icon={personAddFill} color="#0f8409" width={32} height={32} />
+      },
+      {
+        name: 'New PUCC',
+        value: props?.data?.todayPucc,
+        icon: <Icon icon={calendarFill} color="#0f8409" width={32} height={32} />
+      },
+      {
+        name: 'New Fitness',
+        value: props?.data?.todayFit,
+        icon: <Icon icon={calendarFill} color="#0f8409" width={32} height={32} />
+      },
+      {
+        name: 'New Insurance',
+        value: props?.data?.todayIns,
+        icon: <Icon icon={calendarFill} color="#0f8409" width={32} height={32} />
+      }
   ];
   return (
     <Card>
-      <CardHeader title="Total Data" />
+      <CardHeader title="Today Entries" />
       <CardContent>
         <Grid container spacing={2}>
           {SOCIALS.map((site) => (

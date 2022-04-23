@@ -223,7 +223,7 @@ export default function AddService() {
         fitnessExpiry: null,
         insuranceIssue: null,
         insuranceExpiry: null,
-        date : new Date()
+        date : Date().toLocaleString("en-Us", {timeZone: 'Asia/Kolkata'})
     });
     const [loader, setLoader] = React.useState(false);
 

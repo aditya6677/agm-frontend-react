@@ -134,8 +134,8 @@ const RenderPdf = () => (
                 <View style={styles.section}>
                     <Text style={{ fontSize: '16px', textAlign: 'center' }}>FORM 15</Text>
                     <Text style={{ fontSize: '16px', textAlign: 'center' }}>REGISTER SHOWING THE DRIVING HOUR SPENT BY A TRAINEE</Text>
-                    <Text style={{ fontSize: '14px' }}>School/Establishment : Shree Agrahari Motor Driving School, Tetari Bazar, Siddharth Nagar</Text>
-                    <Text style={{ fontSize: '13px', marginTop: '10px' }}>Name of Trainee : Shree Agrahari</Text>
+                    <Text style={{ fontSize: '14px' }}>School/Establishment : Shri Agrahari Motor Driving School, Tetari Bazar, Siddharth Nagar</Text>
+                    <Text style={{ fontSize: '13px', marginTop: '10px' }}>Name of Trainee : Shri Agrahari</Text>
                     <Text style={{ fontSize: '13px' }}>Enrollment Number : 113</Text>
                     <Text style={{ fontSize: '13px' }}>Date of Enrollment : 11/02/2022</Text>
                 </View>

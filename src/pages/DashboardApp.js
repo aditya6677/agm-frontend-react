@@ -20,7 +20,9 @@ import {
   AppWebsiteVisits,
   AppTrafficBySite,
   AppCurrentSubject,
-  AppConversionRates
+  AppConversionRates,
+  AppExpriredData,
+  AppTodayData
 } from '../components/_dashboard/app';
 
 const token = localStorage.getItem('token');
@@ -42,10 +44,10 @@ export default function DashboardApp(props) {
       method: 'GET',
       headers: myHeaders,
     };
-    fetch(process.env.REACT_APP_BACKEND_API + '/info', requestOptions)
+    fetch(process.env.REACT_APP_BACKEND_API + '/dashboard', requestOptions)
       .then(res => res.json())
       .then((result) => {
-        setInfo(result.info);
+        setInfo(result.data);
         setLoader(false);
       })
       .catch((e) => {
@@ -70,41 +72,44 @@ export default function DashboardApp(props) {
         </Stack>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWeeklySales puc = {info.puc || 0}/>
+            <AppWeeklySales puc = {info?.weeklyExpiring?.weeklyExpiringPucc.length || 0}/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppNewUsers ins = {info.ins || 0}/>
+            <AppNewUsers ins = {info?.weeklyExpiring?.weeklyExpiringInsurance.length || 0}/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppItemOrders fit = {info.fit || 0} />
+            <AppItemOrders fit = {info?.weeklyExpiring?.weeklyExpiringFitness.length || 0} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppBugReports today = {info.today} total = {info.total}/>
+            <AppBugReports today = {info?.todayEntries?.totalToday} total = {info?.vehiclesData?.total}/>
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits />
+          </Grid> */}
+          <Grid item xs={12} md={6} lg={4}>
+            <AppTrafficBySite vehicle={info?.vehiclesData} student={info?.student}/>
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentVisits />
+            <AppExpriredData data={info?.expiredData}/>
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={4}>
+            <AppTodayData data={info?.todayEntries}/>
+          </Grid>
+
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentSubject />
-          </Grid>
+            <AppCurrentVisits />
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={8}>
-            <AppTasks />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppOrderTimeline />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

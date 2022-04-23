@@ -96,7 +96,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         >
           <Box
             component="img"
-            src="/static/illustrations/logo.png"
+            src="/static/logo-3.png"
             sx={{ width: 100, position: 'absolute', top: -50 }}
           />
           <p style={{fontSize : '13px', color : 'green', fontWeight : 'bold'}}>Shri Agrahari Sewa Sansthan</p>

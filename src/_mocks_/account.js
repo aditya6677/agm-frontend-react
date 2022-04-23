@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------
 
 const account = {
-  displayName: 'Shree Agrahari',
+  displayName: 'Shri Agrahari',
   email: 'nikhi2311@gmail.com',
   photoURL: '/static/logo.png'
 };
