@@ -47,8 +47,13 @@ export default function LoginForm() {
             localStorage.setItem('token', result.token)
             window.location.reload();
           }
+          else{
+            formik.setSubmitting(false) 
+          }
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+          formik.setSubmitting(false) 
+        })
     }
   });
 
