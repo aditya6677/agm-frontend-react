@@ -106,6 +106,8 @@ const convertDDmmYYYYY = (newDate) => {
     return today;
 }
 
+const zeroPad = (num, places) => String(num).padStart(places, '0')
+
 var rows = (startDate) => Array(30).fill().map(function (p, i) {
     let date = new Date(startDate);
     let newDate = date.addDays(i);
@@ -140,9 +142,9 @@ const MyDocument = (data) => (
                 <View style={styles.section}>
                     <Text style={{ fontSize: '15px', textAlign: 'center' }}>FORM 15 [See Rule 27(I)]</Text>
                     <Text style={{ fontSize: '15px', textAlign: 'center' }}>REGISTER SHOWING THE DRIVING HOURS SPENT BY A TRAINEE</Text>
-                    <Text style={{ fontSize: '13px' }}>Name of the School/Establishment : Shri Agrahari Motor Driving School, Naugarh, Tetari Bazar, Siddharth Nagar</Text>
+                    <Text style={{ fontSize: '13px' }}>Name of the School/Establishment : Shri Agrahari Motor Driving Traning School, Naugarh, Tetari Bazar, Siddharth Nagar</Text>
                     <Text style={{ fontSize: '12px', marginTop: '5px' }}>Name of Trainee : {data.studentName}</Text>
-                    <Text style={{ fontSize: '12px' }}>Enrollment Number : {data.enrollmnentNo}</Text>
+                    <Text style={{ fontSize: '12px' }}>Enrollment Number : {zeroPad(data.enrollmnentNo, 4)}</Text>
                     <Text style={{ fontSize: '12px' }}>Date of Enrollment : {convertDDmmYYYYY(data.trainigStartDate)}</Text>
                 </View>
                 <View style={styles.table}>

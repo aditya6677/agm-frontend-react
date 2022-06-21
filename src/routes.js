@@ -15,6 +15,7 @@ import Tasks from "./pages/Tasks";
 import AdmissionForm from './pages/AdmissionForm';
 import RenderPdf from './pages/DownloadPdf';
 import User from './pages/ListStudents'
+import Certificate from './pages/Certificate';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +37,8 @@ export default function Router() {
         { path: 'add', element: <AddService /> },
         { path: 'admission', element: <AdmissionForm /> },
         { path: 'admission/download', element: <RenderPdf /> },
-        { path: 'admission/list', element: <User /> }
+        { path: 'admission/list', element: <User /> },
+        { path: 'admission/certificate', element : <Certificate/>}
       ]
     },
     {

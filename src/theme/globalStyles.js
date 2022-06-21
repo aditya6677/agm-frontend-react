@@ -9,8 +9,8 @@ const GlobalStyles = withStyles((theme) => ({
       padding: 0,
       boxSizing: 'border-box'
     },
-    '.searchVehicle' : {
-      height : '53px'
+    '.searchVehicle': {
+      height: '53px'
     },
     html: {
       width: '100%',

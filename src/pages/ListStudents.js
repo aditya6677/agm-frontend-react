@@ -96,6 +96,7 @@ export default function User() {
     else 
       return 'error'
   }
+  const zeroPad = (num, places) => String(num).padStart(places, '0')
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
@@ -140,7 +141,7 @@ export default function User() {
                       const isExpired = checkExpire(trainingEndDate);
                       return (
                         <TableRow hover key={enrollmnentNo} tabIndex={-1}>
-                          <TableCell align="left">{enrollmnentNo}</TableCell>
+                          <TableCell align="left">{zeroPad(enrollmnentNo, 4)}</TableCell>
                           <TableCell align="left">{studentName}</TableCell>
                           <TableCell align="left">{fatherName}</TableCell>
                           <TableCell align="left">{convertDDmmYYYYY(trainigStartDate)}</TableCell>

@@ -1,0 +1,96 @@
+body {
+    font-family: Roboto;
+}
+
+.certificate-container {
+    padding: 50px;
+    width: 1024px;
+}
+.certificate {
+    border: 20px ridge #44906a;
+    padding: 25px;
+    height: 600px;
+    position: relative;
+}
+
+.certificate:after {
+    content: '';
+    top: 0px;
+    left: 117px;
+    bottom: 0;
+    right: 0px;
+    position: absolute;
+    background-image: url(http://localhost:3002/static/logo.png);
+    opacity: 0.07;
+    background-size: 100%;
+    z-index: 4;
+    width: 664px;
+    background-position: center;
+}
+
+.certificate-header > .logo {
+    width: 80px;
+    height: 80px;
+}
+
+.certificate-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.certificate-title {
+    text-align: center;    
+}
+
+.certificate-body {
+    text-align: center;
+}
+
+h1 {
+
+    font-weight: 400;
+    font-size: 48px;
+    color: #0C5280;
+}
+
+.student-name {
+    font-size: 24px;
+    font-family: cursive;
+}
+
+.certificate-content {
+    margin: 0 auto;
+    width: 750px;
+}
+
+.about-certificate {
+    width: 380px;
+    margin: 0 auto;
+}
+
+.topic-description {
+
+    text-align: center;
+}
+
+.col-md-6{
+    width: 50%;
+    display: inline-block;
+}
+
+.certificate-footer{
+    margin-top: 100px;
+}
+
+.cursiveName{
+    font-family: cursive;
+}
+
+
+
+
+
+
+
+
