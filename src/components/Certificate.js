@@ -19,7 +19,8 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                 <div class="certificate">
                     <div class="water-mark-overlay"></div>
                     <div class="certificate-header">
-                        <img src='https://shriagrahari.in/static/media/logo.e9dce4f8.png' class="logo" alt="" />
+                        {/* <img src='/static/logo.png' className="logo" alt="" /> */}
+                        <div className='logo'></div>
                         <p>Certificate No : <b>{props.serialNumber}</b></p>
                     </div>
                     <div class="certificate-body">
