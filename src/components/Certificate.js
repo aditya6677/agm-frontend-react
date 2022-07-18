@@ -78,7 +78,7 @@ export default function MyCertificate(props) {
         setName((e.target.value).toUpperCase());
         setGet(false);
     }
-    const [Name, setName] = React.useState('');
+    const [Name, setName] = React.useState('Sandeep Kumar');
     const serialNumber = Math.floor(1000 + Math.random() * 9000);
     return (
         <>
@@ -95,14 +95,12 @@ export default function MyCertificate(props) {
                 </Card>
 
             </div>
-            {
-                get ? <div style={{ textAlign: 'center' }}>
-                        <ComponentToPrint ref={componentRef} name={Name} serialNumber={serialNumber}/>
-                        <button onClick={handlePrint} className="printBtn">Print Certificate</button>
-                        </div> 
-                    : null
-            }
-            
+
+            <div style={{ textAlign: 'center' }}>
+                <ComponentToPrint ref={componentRef} name={Name} serialNumber={serialNumber} />
+                <button onClick={handlePrint} className="printBtn">Print Certificate</button>
+            </div>
+
         </>
 
     )
