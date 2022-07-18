@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import Scrollbar from '../components/Scrollbar';
 import TextField from '@material-ui/core/TextField';
+import logo from '../layouts/logo.png'
 
 
 import '../theme/css/certificate.css'
@@ -18,7 +19,7 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                 <div class="certificate">
                     <div class="water-mark-overlay"></div>
                     <div class="certificate-header">
-                        <img src="/static/logo.png" class="logo" alt="" />
+                        <img src={logo} class="logo" alt="" />
                         <p>Certificate No : <b>{props.serialNumber}</b></p>
                     </div>
                     <div class="certificate-body">
