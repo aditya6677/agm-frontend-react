@@ -46,6 +46,11 @@ const sidebarConfig = [
     path: '/dashboard/admission',
     icon: getIcon(peopleFill)
   },
+  {
+    title: 'Certificate',
+    path: '/dashboard/certificate',
+    icon: getIcon(peopleFill)
+  },
   // {
   //   title: 'register',
   //   path: '/register',

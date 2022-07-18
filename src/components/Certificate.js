@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { useRef } from 'react';
+import {
+    Card,
+    Button,
+} from '@material-ui/core';
+import Scrollbar from '../components/Scrollbar';
+import TextField from '@material-ui/core/TextField';
+
 
 import '../theme/css/certificate.css'
 
@@ -11,8 +18,8 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                 <div class="certificate">
                     <div class="water-mark-overlay"></div>
                     <div class="certificate-header">
-                        <img src="http://localhost:3002/static/logo.png" class="logo" alt=""/>
-                        <p>Certificate No : <b>847858</b></p>
+                        <img src="/static/logo.png" class="logo" alt="" />
+                        <p>Certificate No : <b>{props.serialNumber}</b></p>
                     </div>
                     <div class="certificate-body">
 
@@ -23,7 +30,7 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                                 <p>
                                     THIS IS TO CERTIFY THAT MR/MS
                                 </p>
-                                <p class="student-name">Sandeep Kumar</p>
+                                <p class="student-name">{props.name}</p>
                             </div>
                             <p class="topic-title">
                                 has successfully completed a BASIC DRIVING COURSE
@@ -57,13 +64,46 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
 
 export default function MyCertificate(props) {
     const componentRef = useRef();
+    const [get, setGet] = React.useState(false);
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+    const getCertificate = (e) => {
+        e.preventDefault();
+        setGet(true);
+    }
+
+    const handleChange = (e) => {
+        setName((e.target.value).toUpperCase());
+        setGet(false);
+    }
+    const [Name, setName] = React.useState('');
+    const serialNumber = Math.floor(1000 + Math.random() * 9000);
     return (
-        <div>
-            <ComponentToPrint ref={componentRef} />
-            <button onClick={handlePrint}>Print this out!</button>
-        </div>
+        <>
+            <div className='getCertificate'>
+                <Card className='cardPadding'>
+                    <Scrollbar>
+                        <form className='getCertForm' onSubmit={getCertificate}>
+                            <TextField className='textField' id="outlined-basic" label="Candidate Name" variant="outlined" name="rcNumber" value={Name} onChange={e => handleChange(e)} required />
+                            <Button className='certBtn' variant="contained" color="primary" type="submit">
+                                Get Certificate
+                            </Button>
+                        </form>
+                    </Scrollbar>
+                </Card>
+
+            </div>
+            {
+                get ? <div style={{ textAlign: 'center' }}>
+                        <ComponentToPrint ref={componentRef} name={Name} serialNumber={serialNumber}/>
+                        <button onClick={handlePrint} className="printBtn">Print Certificate</button>
+                        </div> 
+                    : null
+            }
+            
+        </>
+
     )
 }

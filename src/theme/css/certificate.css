@@ -5,6 +5,7 @@ body {
 .certificate-container {
     padding: 50px;
     width: 1024px;
+    padding-bottom: 15px !important;
 }
 .certificate {
     border: 20px ridge #44906a;
@@ -20,7 +21,7 @@ body {
     bottom: 0;
     right: 0px;
     position: absolute;
-    background-image: url(http://localhost:3002/static/logo.png);
+    background-image: url('../images/logo.png');
     opacity: 0.07;
     background-size: 100%;
     z-index: 4;
@@ -86,6 +87,44 @@ h1 {
 .cursiveName{
     font-family: cursive;
 }
+
+.printBtn {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    margin-right: 50px;
+  }
+  
+  .printBtn {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }
+
+  .getCertForm{
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+  }
+  .cardPadding{
+    padding: 50px;
+  }
+
+  .textField{
+    width: 40%;
+  }
+
+  .certBtn{
+    width: 30%;
+  }
+  
 
 
 

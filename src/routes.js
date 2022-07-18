@@ -37,8 +37,8 @@ export default function Router() {
         { path: 'add', element: <AddService /> },
         { path: 'admission', element: <AdmissionForm /> },
         { path: 'admission/download', element: <RenderPdf /> },
-        { path: 'admission/list', element: <User /> },
-        { path: 'admission/certificate', element : <Certificate/>}
+        { path: 'admission/list', element: <User />},
+        { path: 'certificate', element : <Certificate/>}
       ]
     },
     {
